@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gesture in Scala.js Demo</title>
+</head>
+<body>
+
+<div id="root">
+    <p>Click to create Rectangles. Drag them around. Drag them off the window edge to dispose of them. If you drag one under
+    another one and release, the other one will turn red.</p>
+</div>
+
+<!-- Pointer events polyfill http://rich-harris.github.io/Points -->
+<script type="text/javascript" src="./js/Points.js"></script>
+<script type="text/javascript" src="./target/scala-2.11/gesturedemo-fastopt.js"></script>
+<script type="text/javascript">
+  gesture.demo.GestureDemo().main();
+</script>
+
+</body>
+</html>
