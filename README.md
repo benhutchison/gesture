@@ -1,6 +1,6 @@
 # gesture
 
-Purely functional recognition of Drag and Click gestures over a W3C Pointer Event -compatible API
+Purely functional recognition of Drag and Click gestures over a W3C Pointer Event -compatible API, for Scala/Scala.js
 
 Built on top of the `State` monad provided by the [Cats library](https://github.com/non/cats).
 
