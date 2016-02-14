@@ -18,7 +18,6 @@ class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4
     case Down(p, timestamp) =>
       val elapsed = pe.timestamp - timestamp
       val dist = pe.p.distanceTo(p)
-      println(s"elapsed: $elapsed  down time: $timestamp   up time: ${pe.timestamp}")
       val gesture = if (dist < ClickDistThreshold && elapsed < ClickTimeThreshold)
         Click(p, pe.timestamp)
       else
