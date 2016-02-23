@@ -13,6 +13,9 @@ import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.html
 
+import cats._
+import cats.state._
+
 object GestureDemo extends scala.scalajs.js.JSApp {
 
   def main(): Unit = {
@@ -20,12 +23,18 @@ object GestureDemo extends scala.scalajs.js.JSApp {
     val root = doc.getElementById("root")
     val canvas = doc.createElement("canvas").asInstanceOf[html.Canvas]
     root.appendChild(canvas)
-    new GestureCanvas(canvas)
+    new GestureCanvas(
+      canvas,
+      (Up(): PointerState, Option.empty[Rect]),
+      new GestureAndRegionProcessor[Rect]().handlePointerEvent)
   }
 
 }
 
-class GestureCanvas(canvas: html.Canvas) {
+class GestureCanvas[PointerAndRegionState](canvas: html.Canvas,
+                                           initial: PointerAndRegionState,
+                                           handler: (PointerEvent, Vec2d => Option[Rect]) =>
+                                             State[PointerAndRegionState, GestureAndRegions[Rect]]) {
 
   val Width = 162.0
   val Height = 100.0
@@ -33,9 +42,7 @@ class GestureCanvas(canvas: html.Canvas) {
 
   var rectangles: Vector[Rect] = Vector()
 
-  val gestureRegionProcessor = new GestureAndRegionProcessor[Rect]()
-
-  var pointerAndRegionState = (Up(): PointerState, Option.empty[Rect])
+  var pointerAndRegionState = initial
 
   canvas.width = dom.innerWidth
   canvas.height = dom.innerHeight - 50
@@ -70,7 +77,7 @@ class GestureCanvas(canvas: html.Canvas) {
   def search: Vec2d => Option[Rect] = (p) => rectangles.find(_.contains(p))
 
   def handlePointerEvent(pe: PointerEvent) = {
-    val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).run
+    val (newState, gestureAndRegions) = handler(pe, search).run(pointerAndRegionState).run
 
     pointerAndRegionState = newState
     interpret(gestureAndRegions)
