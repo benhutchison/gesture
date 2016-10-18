@@ -101,6 +101,11 @@ class GestureCanvas(canvas: html.Canvas) {
     }
     draw()
   }
+
+  //see Exercize.md
+  def countDragsToRect(gestureAndRegions: GestureAndRegions[Rect]): State[Int, Boolean] = ???
+
+  def lift[T, S, A](s: State[T, A], get: S => T, set: (S, T) => S): State[S, A] = ???
 }
 case class Rect(topLeft: Vec2d, width: Double, height: Double, cssColorString: String,
   //define an ID to keep track of, and retrieve, the rectangle as it gets dragged around
