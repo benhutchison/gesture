@@ -1,9 +1,8 @@
 package gesture
 
 import cats._
-import cats.state._
-import cats.std.all._
-import cats.syntax.traverse._
+import cats.data.State
+import cats.implicits._
 
 class GestureProcessorSpec extends org.specs2.mutable.Specification {
 
@@ -31,8 +30,8 @@ class GestureProcessorSpec extends org.specs2.mutable.Specification {
   }
 
   def eventSequence(initialState: PointerState)(events: PointerEvent*): (PointerState, GestureEvent) = {
-    val tmp = events.toVector.traverseU(gestureProcessor.handlePointerEvent)
-    val (s, gs) = tmp.run(initialState).run
+    val tmp = events.toVector.traverseU(gestureProcessor.handlePointerEvent(_))
+    val (s, gs) = tmp.run(initialState).value
     (s, gs.last)
   }
 }

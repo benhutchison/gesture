@@ -1,8 +1,8 @@
 package gesture
 
 import cats._
-import cats.state._
-import cats.std.all._
+import cats.data.State
+import cats.implicits._
 
 
 case class GestureAndRegions[R](gesture: GestureEvent, from: Option[R], to: Option[R])
@@ -14,7 +14,7 @@ class GestureAndRegionProcessor[R](dragThreshold: Double = 5, ClickDistThreshold
 
   def handlePointerEvent(pe: PointerEvent, regionSearch: Vec2d => Option[R]) = State[PointerRegionState, GestureAndRegions[R]] {
     case (ps, optRegion) =>
-      val (ps2, g) = gestureProcess.handlePointerEvent(pe).run(ps).run
+      val (ps2, g) = gestureProcess.handlePointerEvent(pe).run(ps).value
       g match {
         case DragStart(from, _, to, _, _) =>
           val fromR = regionSearch(from)

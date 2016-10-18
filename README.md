@@ -22,8 +22,15 @@ a search function `(Double, Double) => Option[R]` to find the region `R` at a co
 
 Published for both Scala.jvm and Scala.js.
 
-SBT: `"com.github.benhutchison" %%% "gesture" % "0.1"`
- 
+SBT: `"com.github.benhutchison" %%% "gesture" % "0.2"`
+
+### Changelog
+
+| Version | When   | Changes |
+| --------| -------| --------|
+| 0.1     | Jan 16 | Initial release |
+| 0.2     | Oct 16 | Upgrade libs, cats to 0.7.2, scalajs-dom to 0.9 |
+
 ## gesture demo
  
 Shows a working demo of the recognition system, implemented over an HTML canvas. Colored rectangles can be created and dragged around the screen.

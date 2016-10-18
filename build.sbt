@@ -8,10 +8,10 @@ import org.scalajs.sbtplugin.cross.CrossProject
 
 lazy val commonSettings = Seq(
   organization := "com.github.benhutchison",
-  version := "0.1",
-  scalaVersion := "2.11.6",
+  version := "0.2",
+  scalaVersion := "2.11.8",
   libraryDependencies ++= Seq(
-    "org.spire-math" %%% "cats" % "0.3.0"
+    "org.typelevel" %%% "cats-core" % "0.7.2"
   ),
   publishTo <<= version { (v: String) =>
     Some("releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
@@ -44,7 +44,7 @@ lazy val core = crossProject.in(file("./core"))
   .settings(commonSettings: _*).
   jvmSettings(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core" % "3.7" % "test"
+      "org.specs2" %% "specs2-core" % "3.8.5" % "test"
     ),
     scalacOptions in Test ++= Seq("-Yrangepos")
   )
@@ -56,7 +56,7 @@ lazy val coreJVM = core.jvm
 lazy val demo = project.in(file("./demo"))
   .settings(
     name := "gestureDemo",
-    libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "0.8.0")
+    libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "0.9.0")
   )
   .settings(commonSettings: _*)
   .dependsOn(coreJS)

@@ -6,8 +6,9 @@ import scala.util.Random
 import Predef.{any2stringadd => _, _}
 
 import cats._
-import cats.state._
-import cats.std.all._
+import cats.data.State
+import cats.implicits._
+import cats.syntax.all._
 
 import org.scalajs.dom
 import org.scalajs.dom._
@@ -37,8 +38,8 @@ class GestureCanvas(canvas: html.Canvas) {
 
   var pointerAndRegionState = (Up(): PointerState, Option.empty[Rect])
 
-  canvas.width = dom.innerWidth
-  canvas.height = dom.innerHeight - 50
+  canvas.width = dom.window.innerWidth
+  canvas.height = dom.window.innerHeight - 50
 
   val context = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
 
@@ -70,7 +71,7 @@ class GestureCanvas(canvas: html.Canvas) {
   def search: Vec2d => Option[Rect] = (p) => rectangles.find(_.contains(p))
 
   def handlePointerEvent(pe: PointerEvent) = {
-    val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).run
+    val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).value
 
     pointerAndRegionState = newState
     interpret(gestureAndRegions)

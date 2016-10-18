@@ -1,8 +1,8 @@
 package gesture
 
 import cats._
-import cats.state._
-import cats.std.all._
+import cats.data.State
+import cats.implicits._
 
 class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4.0, ClickTimeThreshold: Double = 400) {
 
