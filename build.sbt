@@ -5,7 +5,6 @@ import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.cross.CrossProject
 
 
-
 lazy val commonSettings = Seq(
   organization := "com.github.benhutchison",
   version := "0.2",
@@ -35,7 +34,7 @@ lazy val commonSettings = Seq(
           <url>https://github.com/benhutchison</url>
         </developer>
       </developers>
-) ++ xerial.sbt.Sonatype.sonatypeSettings
+)
 
 lazy val core = crossProject.in(file("./core"))
   .settings(
@@ -52,6 +51,13 @@ lazy val core = crossProject.in(file("./core"))
 lazy val coreJS = core.js
 
 lazy val coreJVM = core.jvm
+
+lazy val root = project.in(file(".")).aggregate(coreJS, coreJVM).
+  settings(
+    publishArtifact := false,
+    crossScalaVersions := Seq("2.11.8"),
+    sonatypeProfileName := "com.github.benhutchison"
+  )
 
 lazy val demo = project.in(file("./demo"))
   .settings(
