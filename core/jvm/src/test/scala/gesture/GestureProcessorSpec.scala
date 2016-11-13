@@ -1,7 +1,7 @@
 package gesture
 
 import cats._
-import cats.data.State
+import cats.data._
 import cats.implicits._
 
 class GestureProcessorSpec extends org.specs2.mutable.Specification {

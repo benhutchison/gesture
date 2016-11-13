@@ -1,20 +1,10 @@
-import sbt._
-import sbt.Keys._
-
-import org.scalajs.sbtplugin.ScalaJSPlugin
-import org.scalajs.sbtplugin.cross.CrossProject
-
-
 lazy val commonSettings = Seq(
   organization := "com.github.benhutchison",
-  version := "0.2",
-  scalaVersion := "2.11.8",
+  version := "0.3",
+  scalaVersion := "2.12.0",
   libraryDependencies ++= Seq(
-    "org.typelevel" %%% "cats-core" % "0.7.2"
+    "org.typelevel" %%% "cats" % "0.8.1"
   ),
-  publishTo <<= version { (v: String) =>
-    Some("releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-  },
   publishArtifact in Test := false,
   pomExtra :=
     <url>https://github.com/benhutchison/gesture</url>
@@ -43,7 +33,7 @@ lazy val core = crossProject.in(file("./core"))
   .settings(commonSettings: _*).
   jvmSettings(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-core" % "3.8.5" % "test"
+      "org.specs2" %% "specs2-core" % "3.8.6" % "test"
     ),
     scalacOptions in Test ++= Seq("-Yrangepos")
   )
@@ -55,8 +45,8 @@ lazy val coreJVM = core.jvm
 lazy val root = project.in(file(".")).aggregate(coreJS, coreJVM).
   settings(
     publishArtifact := false,
-    crossScalaVersions := Seq("2.11.8"),
-    sonatypeProfileName := "com.github.benhutchison"
+    sonatypeProfileName := "com.github.benhutchison",
+    crossScalaVersions := Seq("2.11.8", "2.12.0")
   )
 
 lazy val demo = project.in(file("./demo"))
@@ -67,4 +57,3 @@ lazy val demo = project.in(file("./demo"))
   .settings(commonSettings: _*)
   .dependsOn(coreJS)
   .aggregate(coreJS)
-  .enablePlugins(ScalaJSPlugin)

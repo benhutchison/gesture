@@ -22,7 +22,7 @@ a search function `(Double, Double) => Option[R]` to find the region `R` at a co
 
 Published for both Scala.jvm and Scala.js.
 
-SBT: `"com.github.benhutchison" %%% "gesture" % "0.2"`
+SBT: `"com.github.benhutchison" %%% "gesture" % "0.3"`
 
 ### Changelog
 
@@ -30,6 +30,7 @@ SBT: `"com.github.benhutchison" %%% "gesture" % "0.2"`
 | --------| -------| --------|
 | 0.1     | Jan 16 | Initial release |
 | 0.2     | Oct 16 | Upgrade libs, cats to 0.7.2, scalajs-dom to 0.9 |
+| 0.3     | Nov 16 | Scala 2.12, cats to 0.8.1 |
 
 ## gesture demo
  
