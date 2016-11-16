@@ -5,7 +5,7 @@ This learning exercise is intended to build skills composing and lensing `State`
 Currently the demo [processes each `PointerEvent` and returns the new `PointerRegionState` and the
  `GestureAndRegions[Rect]` if any](src/main/scala/gesture/demo/GestureDemo.scala#L74).
 
-What if we wanted to count the number of times a drag completed inside a rectangle? Then we would have a second
+What if we wanted to count the number of times a click occurred inside a rectangle? Then we would have a second
 piece of state, the counter, and a second state update, being the counter increment, dependent upon the output
 of the first state process.
 
