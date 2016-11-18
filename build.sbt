@@ -52,8 +52,9 @@ lazy val root = project.in(file(".")).aggregate(coreJS, coreJVM).
 lazy val demo = project.in(file("./demo"))
   .settings(
     name := "gestureDemo",
-    libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "0.9.0")
+    libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "0.9.1")
   )
+  .enablePlugins(ScalaJSPlugin)
   .settings(commonSettings: _*)
   .dependsOn(coreJS)
   .aggregate(coreJS)
