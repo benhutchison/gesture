@@ -57,6 +57,9 @@ jobs:
       - name: Build project
         run: sbt ++${{ matrix.scala }} test
 
+      - name: Make target directories
+        run: mkdir -p target core/.js/target core/.jvm/target demo/target project/target
+
       - name: Compress target directories
         run: tar cf targets.tar target core/.js/target core/.jvm/target demo/target project/target
 

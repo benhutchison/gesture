@@ -38,6 +38,18 @@ ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches :=
   Seq(RefPredicate.StartsWith(Ref.Tag("v")))
 
+ThisBuild / githubWorkflowGeneratedUploadSteps ~= { steps =>
+  val mkdirStep = steps.headOption match {
+    case Some(WorkflowStep.Run(command :: _, _, _, _, _, _)) =>
+      WorkflowStep.Run(
+        commands = List(command.replace("tar cf targets.tar", "mkdir -p")),
+        name = Some("Make target directories")
+      )
+    case _ => sys.error("Can't generate make target dirs workflow step")
+  }
+  mkdirStep +: steps
+}
+
 ThisBuild / githubWorkflowPublish := Seq(WorkflowStep.Sbt(List("ci-release")))
 
 ThisBuild / githubWorkflowPublish := Seq(
