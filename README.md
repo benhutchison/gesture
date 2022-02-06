@@ -2,7 +2,7 @@
 
 Purely functional recognition of Drag and Click gestures over a W3C Pointer Event -compatible API, for Scala/Scala.js
 
-Built on top of the `State` monad provided by the [Cats library](https://github.com/non/cats).
+Built on top of the `State` monad provided by the [Cats library](https://github.com/typelevel/cats).
 
 
 
@@ -22,21 +22,20 @@ a search function `(Double, Double) => Option[R]` to find the region `R` at a co
 
 Published for both Scala.jvm and Scala.js.
 
-SBT: `"com.github.benhutchison" %%% "gesture" % "0.4"`
+SBT: `"com.github.benhutchison" %%% "gesture" % "0.5"`
 
 ### Changelog
 
-| Version | When   | Changes |
-| --------| -------| --------|
-| 0.1     | Jan 16 | Initial release |
-| 0.2     | Oct 16 | Upgrade libs, cats to 0.7.2, scalajs-dom to 0.9 |
-| 0.3     | Nov 16 | Scala 2.12, cats to 0.8.1 |
+| Version | When   | Changes                                                          |
+|---------|--------|------------------------------------------------------------------|
+| 0.1     | Jan 16 | Initial release                                                  |
+| 0.2     | Oct 16 | Upgrade libs, cats to 0.7.2, scalajs-dom to 0.9                  |
+| 0.3     | Nov 16 | Scala 2.12, cats to 0.8.1                                        |
 | 0.4     | Nov 17 | SBT, cats, Scalajs, Specs upgrade. Remove Pointer Event polyfill |
+| 0.5     | Feb 22 | Scala, ScalaJS, Library upgrade                                  |
 
 ## gesture demo
  
 Shows a working demo of the recognition system, implemented over an HTML canvas. Colored rectangles can be created and dragged around the screen.
 
 To try it out, clone the project, run `sbt demo/fullOptJS`, and then load file `demo/demo-opt.html` in a browser.
-
-Requires a browser with [Pointer Event SPI support](https://caniuse.com/#feat=pointer).
