@@ -22,7 +22,7 @@ a search function `(Double, Double) => Option[R]` to find the region `R` at a co
 
 Published for both Scala.jvm and Scala.js.
 
-SBT: `"com.github.benhutchison" %%% "gesture" % "0.3"`
+SBT: `"com.github.benhutchison" %%% "gesture" % "0.4"`
 
 ### Changelog
 
@@ -31,6 +31,7 @@ SBT: `"com.github.benhutchison" %%% "gesture" % "0.3"`
 | 0.1     | Jan 16 | Initial release |
 | 0.2     | Oct 16 | Upgrade libs, cats to 0.7.2, scalajs-dom to 0.9 |
 | 0.3     | Nov 16 | Scala 2.12, cats to 0.8.1 |
+| 0.4     | Nov 17 | SBT, cats, Scalajs, Specs upgrade. Remove Pointer Event polyfill |
 
 ## gesture demo
  
@@ -38,5 +39,4 @@ Shows a working demo of the recognition system, implemented over an HTML canvas.
 
 To try it out, clone the project, run `sbt demo/fullOptJS`, and then load file `demo/demo-opt.html` in a browser.
 
-The demo uses the reliable [Points polyfill](http://rich-harris.github.io/Points) developed by Rich Harris to provide
-Pointer Events across browsers/devices.
+Requires a browser with [Pointer Event SPI support](https://caniuse.com/#feat=pointer).

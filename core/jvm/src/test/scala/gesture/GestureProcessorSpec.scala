@@ -30,7 +30,7 @@ class GestureProcessorSpec extends org.specs2.mutable.Specification {
   }
 
   def eventSequence(initialState: PointerState)(events: PointerEvent*): (PointerState, GestureEvent) = {
-    val tmp = events.toVector.traverseU(gestureProcessor.handlePointerEvent(_))
+    val tmp = events.toVector.traverse(gestureProcessor.handlePointerEvent(_))
     val (s, gs) = tmp.run(initialState).value
     (s, gs.last)
   }

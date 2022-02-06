@@ -14,9 +14,9 @@ import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.html
 
-object GestureDemo extends scala.scalajs.js.JSApp {
+object GestureDemo {
 
-  def main(): Unit = {
+  def main(args: Array[String]): Unit = {
     val doc = dom.document
     val root = doc.getElementById("root")
     val canvas = doc.createElement("canvas").asInstanceOf[html.Canvas]
@@ -38,8 +38,8 @@ class GestureCanvas(canvas: html.Canvas) {
 
   var pointerAndRegionState = (Up(): PointerState, Option.empty[Rect])
 
-  canvas.width = dom.window.innerWidth
-  canvas.height = dom.window.innerHeight - 50
+  canvas.width = dom.window.innerWidth.toInt
+  canvas.height = dom.window.innerHeight.toInt - 50
 
   val context = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
 

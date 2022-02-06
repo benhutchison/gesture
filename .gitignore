@@ -3,6 +3,8 @@
 
 .idea
 
+.bsp
+
 # sbt specific
 .cache
 .history
