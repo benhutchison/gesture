@@ -8,6 +8,7 @@ lazy val commonSettings = Seq(
     "-feature",
     "-unchecked",
   ),
+  sonatypeProfileName := "benhutchison",
 )
 
 lazy val core = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).in(file("core"))
