@@ -4,29 +4,34 @@ import cats._
 import cats.data._
 import cats.implicits._
 
-class GestureProcessorSpec extends org.specs2.mutable.Specification {
+import munit._
+
+class GestureProcessorSpec extends munit.FunSuite  {
 
   val gestureProcessor = new GestureProcessor()
 
-  eg {
+  test("Down,Up") {
     val (s, g) = eventSequence(initialState = Up())(
       PointerDown((0, 0), 0L), PointerUp((2, 2), 10L))
 
-    (s must_== Up()) and (g must_== Click((0, 0), 10L))
+    assertEquals(s, Up())
+    assertEquals(g, Click((0, 0), 10L))
   }
 
-  eg {
+  test("Down,Move,Up") {
     val (s, g) = eventSequence(initialState = Up())(
       PointerDown((0, 0), 0L), PointerMove((20, 20), 10L), PointerUp((30, 30), 20L))
 
-    (s must_== Up()) and (g must_== DragComplete((0, 0), 0L, (30, 30), 20L, (10, 10)))
+    assertEquals(s, Up())
+    assertEquals(g, DragComplete((0, 0), 0L, (30, 30), 20L, (10, 10)))
   }
 
-  eg {
+  test("Down,Move,Leave") {
     val (s, g) = eventSequence(initialState = Up())(
       PointerDown((0, 0), 0L), PointerMove((20, 20), 10L), PointerLeave((30, 30), 20L))
 
-    (s must_== Up()) and (g must_== DragAbort((0, 0), 0L, (30, 30), 20L))
+    assertEquals(s, Up())
+    assertEquals(g, DragAbort((0, 0), 0L, (30, 30), 20L))
   }
 
   def eventSequence(initialState: PointerState)(events: PointerEvent*): (PointerState, GestureEvent) = {
