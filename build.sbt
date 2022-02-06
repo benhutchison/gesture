@@ -1,15 +1,15 @@
-lazy val commonSettings = Seq(
-  organization := "com.github.benhutchison",
-  version := "0.5",
-  scalaVersion := "2.13.7",
-  scalacOptions ++= Seq(
+ThisBuild / organization := "com.github.benhutchison"
+ThisBuild /  version := "0.5"
+ThisBuild /  scalaVersion := "2.13.7"
+ThisBuild /  crossScalaVersions := Seq("2.13.7")
+ThisBuild / scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
     "-feature",
     "-unchecked",
-  ),
-  sonatypeProfileName := "benhutchison",
-)
+  )
+ThisBuild / sonatypeProfileName := "benhutchison"
+
 
 lazy val core = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).in(file("core"))
   .settings(
@@ -19,11 +19,10 @@ lazy val core = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).
       "org.scalameta" %% "munit" % "0.7.29" % Test,
     ),
   )
-  .settings(commonSettings: _*)
 
 lazy val root = project.in(file(".")).aggregate(core.jvm).
   settings(
-    skip in publish := true,
+    publish / skip := true,
   )
 
 lazy val demo = project.in(file("./demo"))
@@ -32,7 +31,6 @@ lazy val demo = project.in(file("./demo"))
     name := "gestureDemo",
     libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "2.1.0"),
   )
-  .settings(commonSettings: _*)
   .aggregate(core.js)
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
