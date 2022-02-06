@@ -1,14 +1,21 @@
-ThisBuild / organization := "com.github.benhutchison"
-ThisBuild /  version := "0.5"
-ThisBuild /  scalaVersion := "2.13.7"
-ThisBuild /  crossScalaVersions := Seq("2.13.7")
-ThisBuild / scalacOptions ++= Seq(
+inThisBuild(List(
+  organization := "com.github.benhutchison",
+  version := "0.5",
+  scalaVersion := "2.13.7",
+  crossScalaVersions := Seq("2.13.7"),
+  scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
     "-feature",
     "-unchecked",
-  )
-ThisBuild / sonatypeProfileName := "benhutchison"
+  ),
+  homepage := Some(url("https://github.com/benhutchison/gesture")),
+  developers := List(
+    Developer("benhutchison", "Ben Hutchison", "brhutchison@gmail.com", url = url("https://github.com/benhutchison"))
+  ),
+  licenses := Seq("MIT License" -> url("https://github.com/sbt/sbt-projectmatrix/blob/master/LICENSE")),
+  sonatypeProfileName := "benhutchison",
+))
 
 
 lazy val core = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).in(file("core"))
