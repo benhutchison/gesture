@@ -1,12 +1,12 @@
-# gesture
+# Gesture
 
 Purely functional recognition of Drag and Click gestures over a W3C Pointer Event -compatible API, for Scala/Scala.js
 
-Built on top of the `State` monad provided by the [Cats library](https://github.com/typelevel/cats).
+Built on top of [`State`](https://typelevel.org/cats/datatypes/state.html) provided by the [Cats library](https://github.com/typelevel/cats).
 
+See also [slidedeck](https://github.com/benhutchison/stateful-fp-gesture-talk) about the library design.
 
-
-## gesture core
+## Gesture core
 
 Contains the library code:
 
@@ -34,7 +34,7 @@ SBT: `"com.github.benhutchison" %%% "gesture" % "0.5"`
 | 0.4     | Nov 17 | SBT, cats, Scalajs, Specs upgrade. Remove Pointer Event polyfill |
 | 0.5     | Feb 22 | Scala, ScalaJS, Library upgrade                                  |
 
-## gesture demo
+## Gesture Demo
  
 Shows a working demo of the recognition system, implemented over an HTML canvas. Colored rectangles can be created and dragged around the screen.
 
