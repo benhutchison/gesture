@@ -6,15 +6,16 @@ import cats.implicits._
 
 class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4.0, ClickTimeThreshold: Double = 400) {
 
-  def pointerDown(pe: PointerDown) = State[PointerState, GestureEvent](ps => ps match {
-    case Up() =>
-      (Down(pe.p, pe.timestamp), Noop)
-    case _ => invalid(pe, ps)
-  })
+  def pointerDown(pe: PointerDown) = State[PointerState, GestureEvent] {
+      case Up() =>
+        (Down(pe.p, pe.timestamp), Noop)
+      case ps => invalid(pe, ps)
+    }
+
 
   def invalid(pe: PointerEvent, ps: PointerState) = (ps, Invalid(s"Unexpected input when in state: $ps", pe))
 
-  def pointerUp(pe: PointerUp) = State[PointerState, GestureEvent](ps => ps match {
+  def pointerUp(pe: PointerUp) = State[PointerState, GestureEvent] {
     case Down(p, timestamp) =>
       val elapsed = pe.timestamp - timestamp
       val dist = pe.p.distanceTo(p)
@@ -25,19 +26,19 @@ class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4
       (Up(), gesture)
     case Drag(from, fromTimestamp, to, toTimestamp) =>
       (Up(), DragComplete(from, fromTimestamp, pe.p, pe.timestamp, pe.p - to))
-    case _ => invalid(pe, ps)
-  })
+    case ps => invalid(pe, ps)
+  }
 
-  def pointerMove(pe: PointerMove) = State[PointerState, GestureEvent](ps => ps match {
+  def pointerMove(pe: PointerMove) = State[PointerState, GestureEvent] {
     case Up() => (Up(), Noop)
-    case Down(p, timestamp) =>
+    case ps@Down(p, timestamp) =>
       if (p.distanceTo(pe.p) > dragThreshold)
         (Drag(p, timestamp, pe.p, pe.timestamp), DragStart(p, timestamp, pe.p, pe.timestamp, pe.p - p))
       else
         (ps, Noop)
     case Drag(from, fromTimestamp, to, toTimestamp) =>
       (Drag(from, fromTimestamp, pe.p, pe.timestamp), DragMove(from, fromTimestamp, pe.p, pe.timestamp, pe.p - to))
-  })
+  }
 
   def pointerLeave(pe: PointerLeave) = State[PointerState, GestureEvent] {
     case Drag(from, fromTimestamp, to, toTimestamp) =>
