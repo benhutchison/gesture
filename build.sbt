@@ -37,7 +37,9 @@ lazy val demo = project.in(file("./demo"))
   .settings(
     name := "gestureDemo",
     libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "2.1.0"),
+    scalaJSUseMainModuleInitializer := true,
   )
+  .dependsOn(core.js)
   .aggregate(core.js)
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")

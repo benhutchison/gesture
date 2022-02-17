@@ -70,7 +70,7 @@ class GestureCanvas(canvas: html.Canvas) {
 
   def search: Vec2d => Option[Rect] = (p) => rectangles.find(_.contains(p))
 
-  def handlePointerEvent(pe: PointerEvent) = {
+  def handlePointerEvent(pe: gesture.PointerEvent) = {
     val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).value
 
     pointerAndRegionState = newState
