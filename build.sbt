@@ -1,8 +1,8 @@
 inThisBuild(List(
   organization := "com.github.benhutchison",
   version := "0.5",
-  scalaVersion := "2.13.7",
-  crossScalaVersions := Seq("2.13.7"),
+  scalaVersion := "3.1.1",
+  crossScalaVersions := Seq("3.1.1"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
