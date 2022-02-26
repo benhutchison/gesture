@@ -31,7 +31,13 @@ class GestureCanvas(canvas: html.Canvas):
 
   var rectangles: Vector[Rect] = Vector()
 
-  val gestureRegionProcessor = new GestureAndRegionProcessor[Rect]()
+  val gestureRegionProcessor = new GestureAndRegionProcessor[Rect]() {
+    def regionSearch(p: Vec2d): Option[Rect] =
+      rectangles.find(r => r.contains(p))
+    def bottomRegionSearch(p: Vec2d, optRegionToExclude: Option[Rect]): Option[Rect] =
+      rectangles.reverse.find(r => r.contains(p) && Some(r) != (optRegionToExclude))
+  }
+
 
   var pointerAndRegionState = (Up(): PointerState, Option.empty[Rect])
 
@@ -54,10 +60,10 @@ class GestureCanvas(canvas: html.Canvas):
       canvas.addEventListener[dom.PointerEvent](name, (event: dom.PointerEvent) =>
         handlePointerEvent(event)))
 
-  def search: Vec2d => Option[Rect] = (p) => rectangles.find(_.contains(p))
+
 
   def handlePointerEvent(pe: PointerEvent) = {
-    val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).value
+    val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe).run(pointerAndRegionState).value
 
     pointerAndRegionState = newState
     interpret(gestureAndRegions)
@@ -69,7 +75,7 @@ class GestureCanvas(canvas: html.Canvas):
         def randLightValue = 180 + Random.nextInt(60)
         val randomColor = s"rgb($randLightValue, $randLightValue, $randLightValue)"
         val r = new Rect(p, Width, Height, randomColor)
-        rectangles = rectangles :+ r
+        rectangles = r +: rectangles
         draw()
       case GestureAndRegions(d: DragMove, Some(Rect(_, _, _, _, id)), _) =>
         rectangles = rectangles.map(r =>
