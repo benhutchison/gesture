@@ -1,8 +1,9 @@
 package gesture
 
-import cats._
+import cats.*
 import cats.data.State
-import cats.implicits._
+import cats.implicits.*
+import org.scalajs.dom.PointerEvent
 
 
 case class GestureAndRegions[R](gesture: GestureEvent, from: Option[R], to: Option[R])

@@ -14,19 +14,16 @@ import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.html
 
-object GestureDemo {
+object GestureDemo:
 
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     val doc = dom.document
     val root = doc.getElementById("root")
     val canvas = doc.createElement("canvas").asInstanceOf[html.Canvas]
     root.appendChild(canvas)
     new GestureCanvas(canvas)
-  }
 
-}
-
-class GestureCanvas(canvas: html.Canvas) {
+class GestureCanvas(canvas: html.Canvas):
 
   val Width = 162.0
   val Height = 100.0
@@ -44,41 +41,30 @@ class GestureCanvas(canvas: html.Canvas) {
   val context = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
 
 
-  def draw(): Unit = {
+  def draw(): Unit =
+    val rect = canvas.getBoundingClientRect()
     context.clearRect(0, 0, canvas.width, canvas.height)
-    rectangles.reverseIterator.foreach(r => {
-      context.fillStyle = r.cssColorString
-      context.fillRect(r.topLeft._1, r.topLeft._2, r.width, r.height)
-    })
-  }
+    rectangles.reverseIterator.foreach(r =>
+        context.fillStyle = r.cssColorString
+        //we adjust from client coordinates into canvas coordinates here
+        context.fillRect(r.topLeft._1 - rect.left, r.topLeft._2 - rect.top, r.width, r.height))
 
-  def forwardEvent(name: String, to: (Vec2d, Long) => Unit) = {
-    canvas.addEventListener[dom.MouseEvent](name, (event: dom.MouseEvent) => {
-      var rect = canvas.getBoundingClientRect()
-      // translate the incoming event coordinates so that they start at (0,0) in top left corner of canvas
-      val p = (
-        event.clientX.toInt - rect.left,
-        event.clientY.toInt - rect.top)
-      to(p, event.timeStamp.toLong)
-    })
-  }
 
-  forwardEvent("pointerdown", {case (p, ts) => handlePointerEvent(PointerDown(p, ts))})
-  forwardEvent("pointermove", {case (p, ts) => handlePointerEvent(PointerMove(p, ts))})
-  forwardEvent("pointerup", {case (p, ts) => handlePointerEvent(PointerUp(p, ts))})
-  forwardEvent("pointerleave", {case (p, ts) => handlePointerEvent(PointerLeave(p, ts))})
+  List("pointerdown", "pointermove", "pointerup", "pointerleave").foreach(name =>
+      canvas.addEventListener[dom.PointerEvent](name, (event: dom.PointerEvent) =>
+        handlePointerEvent(event)))
 
   def search: Vec2d => Option[Rect] = (p) => rectangles.find(_.contains(p))
 
-  def handlePointerEvent(pe: gesture.PointerEvent) = {
+  def handlePointerEvent(pe: PointerEvent) = {
     val (newState, gestureAndRegions) = gestureRegionProcessor.handlePointerEvent(pe, search).run(pointerAndRegionState).value
 
     pointerAndRegionState = newState
     interpret(gestureAndRegions)
   }
 
-  def interpret(gr: GestureAndRegions[Rect]) = {
-    gr match {
+  def interpret(gr: GestureAndRegions[Rect]) =
+    gr match
       case GestureAndRegions(Click(p, timestamp), None, None) =>
         def randLightValue = 180 + Random.nextInt(60)
         val randomColor = s"rgb($randLightValue, $randLightValue, $randLightValue)"
@@ -98,18 +84,18 @@ class GestureCanvas(canvas: html.Canvas) {
             r.copy(cssColorString = RedColorString)
           else r)
       case _ => Noop
-    }
+
     draw()
-  }
+
 
   //see Exercize.md
   def countDragsToRect(gestureAndRegions: GestureAndRegions[Rect]): State[Int, Boolean] = ???
 
   def lift[T, S, A](s: State[T, A], get: S => T, set: (S, T) => S): State[S, A] = ???
-}
+
 case class Rect(topLeft: Vec2d, width: Double, height: Double, cssColorString: String,
   //define an ID to keep track of, and retrieve, the rectangle as it gets dragged around
-  id: Long = Random.nextLong()) {
+  id: Long = Random.nextLong()):
 
   def contains(p: Vec2d) = p._1 >= topLeft._1 && p._2 >= topLeft._2 && p._1 < topLeft._1 + width && p._2 < topLeft._2 + height
-}
+

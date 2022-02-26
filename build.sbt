@@ -1,6 +1,6 @@
 inThisBuild(List(
   organization := "com.github.benhutchison",
-  version := "0.5",
+  version := "0.6",
   scalaVersion := "3.1.1",
   crossScalaVersions := Seq("3.1.1"),
   scalacOptions ++= Seq(
@@ -18,16 +18,18 @@ inThisBuild(List(
 ))
 
 
-lazy val core = crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure).in(file("core"))
+lazy val core = project.in(file("core"))
+  .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "gesture",
     libraryDependencies ++= Seq(
+      "org.scala-js" %%% "scalajs-dom" % "2.1.0",
       "org.typelevel" %%% "cats-core" % "2.7.0",
-      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalameta" %%% "munit" % "0.7.29" % Test,
     ),
   )
 
-lazy val root = project.in(file(".")).aggregate(core.jvm).
+lazy val root = project.in(file(".")).aggregate(core).
   settings(
     publish / skip := true,
   )
@@ -36,11 +38,10 @@ lazy val demo = project.in(file("./demo"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "gestureDemo",
-    libraryDependencies ++= Seq("org.scala-js" %%% "scalajs-dom" % "2.1.0"),
     scalaJSUseMainModuleInitializer := true,
   )
-  .dependsOn(core.js)
-  .aggregate(core.js)
+  .dependsOn(core)
+  .aggregate(core)
 
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches :=

@@ -1,5 +1,7 @@
 package gesture
 
+import org.scalajs.dom.PointerEvent
+
 type Vec2d = (Double, Double)
 
 extension (v: Vec2d)
@@ -12,5 +14,7 @@ extension (v: Vec2d)
     val dx = other._1 - v._1
     val dy = other._2 - v._2
     math.sqrt(dx * dx + dy * dy)
+
+
 
 

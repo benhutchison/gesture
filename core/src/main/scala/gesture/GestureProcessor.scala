@@ -1,8 +1,11 @@
 package gesture
 
-import cats._
+import cats.*
 import cats.data.State
-import cats.implicits._
+import cats.implicits.*
+import org.scalajs.dom.PointerEvent
+
+import scala.util.Try
 
 class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4.0, ClickTimeThreshold: Double = 400) {
 
@@ -12,8 +15,7 @@ class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4
       case ps => invalid(pe, ps)
     }
 
-
-  def invalid(pe: PointerEvent, ps: PointerState) = (ps, Invalid(s"Unexpected input when in state: $ps", pe))
+  def invalid(pe: PointerAdt, ps: PointerState) = (ps, Invalid(s"Unexpected input when in state: $ps", pe))
 
   def pointerUp(pe: PointerUp) = State[PointerState, GestureEvent] {
     case Down(p, timestamp) =>
@@ -46,18 +48,17 @@ class GestureProcessor(dragThreshold: Double = 5, ClickDistThreshold: Double = 4
     case _ => (Up(), Noop)
   }
 
-  def handlePointerEvent(pe: PointerEvent): State[PointerState, GestureEvent] = pe match {
-    case p: PointerDown => pointerDown(p)
-    case p: PointerUp => pointerUp(p)
-    case p: PointerMove => pointerMove(p)
-    case p: PointerLeave => pointerLeave(p)
-  }
+  def handlePointerAdt(pa: PointerAdt): State[PointerState, GestureEvent] =
+    pa match
+      case p: PointerMove => pointerMove(p)
+      case p: PointerDown => pointerDown(p)
+      case p: PointerUp => pointerUp(p)
+      case p: PointerLeave => pointerLeave(p)
+
+
+  def handlePointerEvent(pe: PointerEvent): State[PointerState, GestureEvent] =
+    PointerAdt.fromPointerEvent(pe).fold(State.pure(Noop))(handlePointerAdt(_))
 }
 
 
-sealed trait PointerState
-case class Up() extends PointerState
-case class Down(p: Vec2d, timestamp: Long) extends PointerState
-case class Drag(from: Vec2d, fromTimestamp: Long,
-                to: Vec2d, toTimestamp: Long) extends PointerState
 

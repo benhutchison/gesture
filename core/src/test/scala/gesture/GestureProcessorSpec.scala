@@ -1,10 +1,11 @@
 package gesture
 
-import cats._
-import cats.data._
-import cats.implicits._
+import cats.*
+import cats.data.*
+import cats.implicits.*
+import munit.*
 
-import munit._
+import scala.scalajs.js
 
 class GestureProcessorSpec extends munit.FunSuite  {
 
@@ -34,8 +35,8 @@ class GestureProcessorSpec extends munit.FunSuite  {
     assertEquals(g, DragAbort((0, 0), 0L, (30, 30), 20L))
   }
 
-  def eventSequence(initialState: PointerState)(events: PointerEvent*): (PointerState, GestureEvent) = {
-    val tmp = events.toVector.traverse(gestureProcessor.handlePointerEvent(_))
+  def eventSequence(initialState: PointerState)(events: PointerAdt*): (PointerState, GestureEvent) = {
+    val tmp = events.toVector.traverse(gestureProcessor.handlePointerAdt(_))
     val (s, gs) = tmp.run(initialState).value
     (s, gs.last)
   }
