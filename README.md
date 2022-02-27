@@ -33,6 +33,7 @@ SBT: `"com.github.benhutchison" %%% "gesture" % "0.5"`
 | 0.3     | Nov 16 | Scala 2.12, cats to 0.8.1                                        |
 | 0.4     | Nov 17 | SBT, cats, Scalajs, Specs upgrade. Remove Pointer Event polyfill |
 | 0.5     | Feb 22 | Scala, ScalaJS, Library upgrade                                  |
+| 0.6     | Feb 22 | Scala 3. Better use of DOM PointerEvents. Rewrite demo code.     |
 
 ## Gesture Demo
  
